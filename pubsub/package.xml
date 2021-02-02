@@ -3,11 +3,13 @@
 <package format="3">
   <name>pubsub</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="yael@todo.todo">yael</maintainer>
-  <license>TODO: License declaration</license>
+  <description>A simple publisher subscriber demo</description>
+  <maintainer email="me@yael.fyi">yael</maintainer>
+  <license>The unlincense</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

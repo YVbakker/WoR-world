@@ -17,17 +17,18 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 add_executable(publisher src/publisher.cpp)
+add_executable(subscriber src/subscriber.cpp)
+ament_target_dependencies(publisher rclcpp std_msgs)
+ament_target_dependencies(subscriber rclcpp std_msgs)
 target_include_directories(publisher PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
-install(TARGETS publisher
-  DESTINATION lib/${PROJECT_NAME})
+install(TARGETS publisher subscriber DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
