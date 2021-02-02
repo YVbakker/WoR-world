@@ -33,17 +33,18 @@ public:
   }
 
 private:
+  std::random_device device;
+  static std::mt19937 generator(device());
+  std::uniform_int_distribution<int> dist(0, 9);
   void timer_callback()
   {
     auto message = std_msgs::msg::UInt8();
-    message.data = dist(rd);
+    message.data = dist(generator);
     RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", std::to_string(message.data));
     publisher_->publish(message);
   }
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-  std::random_device rd;
-  std::uniform_int_distribution<int> dist(0, 9);
 };
 
 int main(int argc, char *argv[])
