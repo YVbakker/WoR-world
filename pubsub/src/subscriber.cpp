@@ -20,7 +20,7 @@ class MinimalSubscriber : public rclcpp::Node
     MinimalSubscriber()
     : Node("minimal_subscriber")
     {
-      subscription_ = this->create_subscription<std_msgs::msg::String>(
+      subscription_ = this->create_subscription<std_msgs::msg::UInt8>(
       "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
     }
 
