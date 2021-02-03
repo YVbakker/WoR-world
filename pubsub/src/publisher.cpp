@@ -28,7 +28,7 @@ public:
   MinimalPublisher()
       : Node("minimal_publisher")
   {
-    publisher_ = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    publisher_ = this->create_publisher<std_msgs::msg::UInt8>("topic", 10);
     timer_ = this->create_wall_timer(
         2000ms, std::bind(&MinimalPublisher::timer_callback, this));
   }
@@ -36,7 +36,7 @@ public:
 private:
   std::random_device device;
   static std::mt19937 generator(device());
-  std::uniform_int_distribution<int> dist(0, 9);
+  std::uniform_int_distribution<uint8_t> dist(0, 9);
   void timer_callback()
   {
     auto message = std_msgs::msg::UInt8();
@@ -45,7 +45,7 @@ private:
     publisher_->publish(message);
   }
   rclcpp::TimerBase::SharedPtr timer_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+  rclcpp::Publisher<std_msgs::msg::UInt8>::SharedPtr publisher_;
 };
 
 int main(int argc, char *argv[])
