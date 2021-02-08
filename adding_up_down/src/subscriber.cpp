@@ -11,7 +11,7 @@
 #include <memory>
 
 #include <rclcpp/rclcpp.hpp>
-#include "tutorial_interfaces/msg/num.hpp"
+#include "tutorial_interfaces/msg/op_num.hpp"
 using std::placeholders::_1;
 
 class MinimalSubscriber : public rclcpp::Node
@@ -20,34 +20,32 @@ public:
   MinimalSubscriber()
       : Node("minimal_subscriber")
   {
-    subscription_ = this->create_subscription<tutorial_interfaces::msg::Num>(
+    subscription_ = this->create_subscription<tutorial_interfaces::msg::OpNum>(
         "topic", 10, std::bind(&MinimalSubscriber::topic_callback, this, _1));
   }
 
 private:
-  int count = 0;
-  int nums[3];
-  void handleNumber(int num)
+  int numTotal = 0;
+  void topic_callback(const tutorial_interfaces::msg::OpNum::SharedPtr msg)
   {
-    if (count < 3)
+    std::string op = msg->op;
+    int num = msg->num;
+    //proper way to do this would be through an enum and switch case but don't feel like dealing with that now
+    if(op == "plus")
     {
-      nums[count] = num;
-      count++;
+      numTotal += num;
     }
-    else
+    else if(op == "min")
     {
-      count = 0;
-      int sum = 0;
-      for (auto &num : nums)
-        sum += num;
-      RCLCPP_INFO(this->get_logger(), "Sum: '%d'", sum);
+      numTotal -= num;
     }
+    else if(op == "keer")
+    {
+      numTotal *= num;
+    }
+    RCLCPP_INFO(this->get_logger(), "The number is now: '%d'", numTotal);
   }
-  void topic_callback(const tutorial_interfaces::msg::Num::SharedPtr msg)
-  {
-    handleNumber(msg->num);
-  }
-  rclcpp::Subscription<tutorial_interfaces::msg::Num>::SharedPtr subscription_;
+  rclcpp::Subscription<tutorial_interfaces::msg::OpNum>::SharedPtr subscription_;
 };
 
 int main(int argc, char *argv[])

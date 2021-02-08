@@ -37,7 +37,7 @@ private:
     size_t num = this->count_++;
     message.op = op[num%3];
     message.num = num;
-    RCLCPP_INFO(this->get_logger(), "Publishing: %s '%d'", message.op.c_str() ,message.num);
+    RCLCPP_INFO(this->get_logger(), "Publishing: %s %d", message.op.c_str() ,message.num);
     publisher_->publish(message);
   }
   rclcpp::TimerBase::SharedPtr timer_;
