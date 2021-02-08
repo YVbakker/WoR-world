@@ -18,7 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(example_interfaces REQUIRED)
+find_package(tutorial_interfaces REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -30,5 +30,16 @@ if(BUILD_TESTING)
   #set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(server src/server.cpp)
+ament_target_dependencies(server rclcpp tutorial_interfaces)
+
+add_executable(client src/client.cpp)
+ament_target_dependencies(client rclcpp tutorial_interfaces)
+
+install(TARGETS
+  server
+  client
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
