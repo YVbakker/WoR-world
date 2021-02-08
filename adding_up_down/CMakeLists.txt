@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(tutorial_interfaces)
+project(adding_up_down)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -8,7 +8,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -17,17 +17,16 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(tutorial_interfaces REQUIRED)
 
-find_package(rosidl_default_generators REQUIRED)
+add_executable(publisher src/publisher.cpp)
+ament_target_dependencies(publisher rclcpp tutorial_interfaces)
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Num.msg"
-  "msg/OpNum.msg"
-  "srv/AddThreeInts.srv"
- )
+add_executable(subscriber src/subscriber.cpp)
+ament_target_dependencies(subscriber rclcpp tutorial_interfaces)
+
+install(TARGETS publisher subscriber DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
